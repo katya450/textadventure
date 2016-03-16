@@ -1,0 +1,42 @@
+2.-------------------------------------------
+Jatka ohjelmaa niin, että pelaaja pääsee liikkumaan huoneesta toiseen.
+Jos pelaaja yrittää mennä suuntaan jonne ei pääse, siitä on ilmoitettava.
+
+Esim:
+Olohuone
+Täällä on kitaroita joka nurkassa mutta lattialla ei ole yhtään mattoa.
+Suunnat: Pohjoinen, Itä
+
+> itä
+Keittiö
+Täällä on astioita aivan liikaa. Näyttää, että kukaan ei ole tiskannut.
+Suunnat: Etelä, Länsi
+
+> Etelä
+Et voi mennä sinne.
+
+1.------------------------------------------- 
+Tee pelin pääohjelman alku joka
+- Pitää kirjaa pelaajan sijainnista (eli sen hetkisestä huoneesta)
+- Pelin keston ajan tekee toistuvasti seuraavat:
+    - Kertoo pelaajan sijainnin (huoneen kuvauksen) ja mihin suuntiin huoneesta pääsee
+    - Lukee pelaajan kirjoittaman komennon
+    - Parseroi pelaajan kirjoittaman komennon (2 kirjainta, 2 sanaa)
+    - Tulkitsee onko komento pelin lopetuskomento "exit" tai "quit" (jolloin peli loppuu)
+    - Antaa virheviestin tunnistamattomasta komennosta
+
+Esimerkki:
+Olohuone
+Täällä on kitaroita joka nurkassa mutta lattialla ei ole yhtään mattoa.
+Suunnat: Pohjoinen, Itä
+
+> mitä helvettiä taas
+En ymmärrä mitä tarkoitat.
+
+Olohuone
+Täällä on kitaroita joka nurkassa mutta lattialla ei ole yhtään mattoa.
+Suunnat: Pohjoinen, Itä
+
+> exit
+No balaillaan.
+
