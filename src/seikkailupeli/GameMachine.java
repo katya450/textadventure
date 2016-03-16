@@ -1,43 +1,38 @@
 package seikkailupeli;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import seikkailupeli.CommandParser;
+import static seikkailupeli.Room.Exit.*;
+import static seikkailupeli.Room.Exit;
 
 public class GameMachine {
 
 	private static Scanner input;
-	private static String direction;
 
 	public static void main (String[] args) {
 		
+		Map<String, Exit> exits = new HashMap<>();
+		exits.put("no", NORTH);
+		exits.put("ea", EAST);
+		exits.put("so", SOUTH);
+		exits.put("we", WEST);
+		
 		Room hallway = new Room("Hallway", "");
 		Room kitchen = new Room("Kitchen", "");
-		hallway.setExitWest(kitchen);
-		kitchen.setExitEast(hallway);
+		hallway.setExit(WEST, kitchen);
+		kitchen.setExit(EAST, hallway);
 
 		boolean gameOn = true;
 		Room location = hallway;
+		
 		input = new Scanner(System.in);
 		
 		while (gameOn) {
 			System.out.println(location.getName());
-			StringBuffer buffer = new StringBuffer();
-			if (location.getExitNorth().isPresent()) {
-				buffer.append("North ");
-			}
-			if (location.getExitEast().isPresent()) {
-				buffer.append("East ");
-			}
-			if (location.getExitSouth().isPresent()) {
-				buffer.append("South ");
-			}
-			if (location.getExitWest().isPresent()) {
-				buffer.append("West ");
-			}
-			System.out.println("Exits: " + buffer.toString());
-
-			
+			System.out.println("Exits: " + location.getExits().toString());
 			System.out.printf("> ");
 			String command = input.nextLine();
 			
@@ -48,41 +43,18 @@ public class GameMachine {
 				gameOn = false;
 			} 
 			
-			if (firstWord.equals("no") || firstWord.equals("ea") || firstWord.equals("so") || firstWord.equals("we")){
-				switch (firstWord) {
-					case "no":
-						if (location.getExitNorth().isPresent()) {
-							location = location.getExitNorth().get();
-						} else {
-							System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
-						}
-						break;
-					case "ea":
-						if (location.getExitEast().isPresent()) {
-							location = location.getExitEast().get();
-						} else {
-							System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
-						}
-						break;
-					case "so":
-						if (location.getExitSouth().isPresent()) {
-							location = location.getExitSouth().get();
-						} else {
-							System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
-						}
-						break;
-					case "we":
-						if (location.getExitWest().isPresent()) {
-							location = location.getExitWest().get();
-						} else {
-							System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
-						}
-						break;
+			Exit maybeDirection = exits.get(firstWord);
+			if (maybeDirection != null) { 				//tsekkaa, että annettu sana on exits mapissä oleva suunta
+				if (location.getExit(maybeDirection).isPresent()) {
+					location = location.getExit(maybeDirection).get();
+				} else {
+					System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
 				}
-				
 			} else {
 				System.out.println("WTF. I don't understand you. Retry. Type a direction for example?");
 			}
+			
+			
 		} 			
 		
 	}
