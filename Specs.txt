@@ -1,3 +1,13 @@
+4.------------------------------------------- 
+Pelaaja voi ottaa esineen käskyllä "get" tai "take" ollessaan samassa huoneessa esineen kanssa.
+
+Esim. "take sukka", "get sukka" tai "ta su".
+HUOM! Esineen käsittelyyn riittää myös kaksi ensimmäistä kirjainta. Esineillä ei siis voi olla identtisiä alkukirjaimia.
+
+3.-------------------------------------------
+Kun pelaaja tulee huoneeseen, peli näyttää esineet joita huoneessa on.
+Jos huoneessa ei ole esineitä, ei mainita esineistä mitään.
+
 2.-------------------------------------------
 Jatka ohjelmaa niin, että pelaaja pääsee liikkumaan huoneesta toiseen.
 Jos pelaaja yrittää mennä suuntaan jonne ei pääse, siitä on ilmoitettava.
