@@ -35,7 +35,7 @@ public class GameMachine {
 		kitchen.setExit(EAST, hallway);
 		
 		boolean gameOn = true;
-		Room location = hallway;
+		Room location = hallway; //siirrä ulkopuolelle ja tee staattinen! Sitten voi käyttää muuallakin.
 		
 		input = new Scanner(System.in);
 		
@@ -51,6 +51,9 @@ public class GameMachine {
 			List<String> parsedCommand = CommandParser.parse(command);	
 			String firstWord = parsedCommand.get(0).toLowerCase();
 			
+			
+			//refaktoroi ennenkun teet mitään!
+			//first word and shit
 			if (firstWord.equals("ex") || firstWord.equals("qu")) {
 				gameOn = false;
 			} 

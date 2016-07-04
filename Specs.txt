@@ -1,3 +1,7 @@
+5.-------------------------------------------
+"In" tai "i" -komento listaa pelaajan inventoryssä olevat itemit.
+Jos pelaajalla ei ole mukana mitään, siitä tulee huomautus.
+
 4.------------------------------------------- 
 Pelaaja voi ottaa esineen käskyllä "get" tai "take" ollessaan samassa huoneessa esineen kanssa.
 
