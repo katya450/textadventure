@@ -40,7 +40,7 @@ public class GameMachine {
 		input = new Scanner(System.in);
 		
 		while (gameOn) {
-			System.out.println("You enter the " + location.getName());
+			System.out.println("You are in the " + location.getName());
 			if (location.getItems().size() > 0) {
 				System.out.println("There are following items in this room: " + location.getItems());
 			}
@@ -55,20 +55,6 @@ public class GameMachine {
 				gameOn = false;
 			} 
 			
-			if (firstWord.equals("ta") || firstWord.equals("ge")) {
-				String secondWord = parsedCommand.get(1).toLowerCase();
-				//TEE: jos ei ole toista sanaa niin ohita tjs, nyt kaatuu siihen
-				//LISÄKSI sano mikä tavara on otettu. 
-				//JA refaktoroi seuraava kohta, koska nyt narisee suunnista kun ottaa itemin!
-				Optional<Item> maybeItem = location.findItem(secondWord);
-				if (maybeItem.isPresent()) {
-					adventurer.addItem(maybeItem.get());
-					location.removeItem(maybeItem.get());
-				} else {
-					System.out.println("No such item");
-				}
-			}
-			
 			Exit maybeDirection = exits.get(firstWord);
 			if (maybeDirection != null) { 				//tsekkaa, että annettu sana on exits mapissä oleva suunta
 				if (location.getExit(maybeDirection).isPresent()) {
@@ -76,15 +62,25 @@ public class GameMachine {
 				} else {
 					System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
 				}
+			} else if (firstWord.equals("ta") || firstWord.equals("ge")) {
+				if (parsedCommand.size() < 2) {
+					System.out.println("Take what?");
+				} else {
+					String secondWord = parsedCommand.get(1).toLowerCase();		
+					Optional<Item> maybeItem = location.findItem(secondWord);
+					if (maybeItem.isPresent()) {
+						adventurer.addItem(maybeItem.get());
+						System.out.println("You have taken the " + maybeItem.get().getName() + ".");
+						location.removeItem(maybeItem.get());
+					} else {
+						System.out.println("No such item");
+					}
+				}
 			} else {
-				System.out.println("WTF. I don't understand you. Retry. Type a direction for example?");
+				System.out.println("WTF. I don't understand you. Retry. Type a direction for example or take an item?");	
 			}
-			
-			
-		} 			
-		
-	}
-	
+		} 				
+	}	
 }
 	
 	
