@@ -13,6 +13,8 @@ public class GameMachine {
 
 	private static Scanner input;
 
+	static Room location; 
+	
 	public static void main (String[] args) {
 		
 		Player adventurer = new Player();
@@ -35,7 +37,7 @@ public class GameMachine {
 		kitchen.setExit(EAST, hallway);
 		
 		boolean gameOn = true;
-		Room location = hallway; //siirrä ulkopuolelle ja tee staattinen! Sitten voi käyttää muuallakin.
+		location = hallway;
 		
 		input = new Scanner(System.in);
 		
@@ -54,6 +56,7 @@ public class GameMachine {
 			
 			//refaktoroi ennenkun teet mitään!
 			//first word and shit
+			
 			if (firstWord.equals("ex") || firstWord.equals("qu")) {
 				gameOn = false;
 			} 
