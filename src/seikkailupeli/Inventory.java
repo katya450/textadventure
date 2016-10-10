@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Player {
+public class Inventory {
 
 	final private List<Item> inventory = new ArrayList<>(); 
 

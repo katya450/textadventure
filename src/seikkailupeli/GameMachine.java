@@ -10,14 +10,12 @@ import static seikkailupeli.Room.Exit.*;
 import static seikkailupeli.Room.Exit;
 
 public class GameMachine {
-
-	private static Scanner input;
-
-	static Room location; 
 	
 	public static void main (String[] args) {
 		
-		Player adventurer = new Player();
+		GameState gameState = new GameState();
+		
+		gameState.inventory = new Inventory();
 		
 		Map<String, Exit> exits = new HashMap<>();
 		exits.put("no", NORTH);
@@ -36,17 +34,17 @@ public class GameMachine {
 		hallway.setExit(WEST, kitchen);
 		kitchen.setExit(EAST, hallway);
 		
-		boolean gameOn = true;
-		location = hallway;
+		gameState.gameOn = true;
+		gameState.location = hallway;
 		
-		input = new Scanner(System.in);
+		final Scanner input = new Scanner(System.in);
 		
-		while (gameOn) {
-			System.out.println("You are in the " + location.getName());
-			if (location.getItems().size() > 0) {
-				System.out.println("There are following items in this room: " + location.getItems());
+		while (gameState.gameOn) {
+			System.out.println("You are in the " + gameState.location.getName());
+			if (gameState.location.getItems().size() > 0) {
+				System.out.println("There are following items in this room: " + gameState.location.getItems());
 			}
-			System.out.println("Exits: " + location.getExits().toString());
+			System.out.println("Exits: " + gameState.location.getExits().toString());
 			System.out.printf("> ");
 			String command = input.nextLine();
 			
@@ -56,15 +54,16 @@ public class GameMachine {
 			
 			//refaktoroi ennenkun teet mitään!
 			//first word and shit
+			//lue 7, 9, 23 pattern -kirjasta (7!)
 			
 			if (firstWord.equals("ex") || firstWord.equals("qu")) {
-				gameOn = false;
+				gameState.gameOn = false;
 			} 
 			
 			Exit maybeDirection = exits.get(firstWord);
 			if (maybeDirection != null) { 				//tsekkaa, että annettu sana on exits mapissä oleva suunta
-				if (location.getExit(maybeDirection).isPresent()) {
-					location = location.getExit(maybeDirection).get();
+				if (gameState.location.getExit(maybeDirection).isPresent()) {
+					gameState.location = gameState.location.getExit(maybeDirection).get();
 				} else {
 					System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
 				}
@@ -73,11 +72,11 @@ public class GameMachine {
 					System.out.println("Take what?");
 				} else {
 					String secondWord = parsedCommand.get(1).toLowerCase();		
-					Optional<Item> maybeItem = location.findItem(secondWord);
+					Optional<Item> maybeItem = gameState.location.findItem(secondWord);
 					if (maybeItem.isPresent()) {
-						adventurer.addItem(maybeItem.get());
+						gameState.inventory.addItem(maybeItem.get());
 						System.out.println("You have taken the " + maybeItem.get().getName() + ".");
-						location.removeItem(maybeItem.get());
+						gameState.location.removeItem(maybeItem.get());
 					} else {
 						System.out.println("No such item");
 					}
