@@ -1,13 +1,15 @@
-package seikkailupeli;
+package net.katyas.textadventure;
+
+import static net.katyas.textadventure.Room.Exit;
+import static net.katyas.textadventure.Room.Exit.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
-import seikkailupeli.CommandParser;
-import static seikkailupeli.Room.Exit.*;
-import static seikkailupeli.Room.Exit;
+
+import net.katyas.textadventure.CommandParser;
 
 public class GameMachine {
 	

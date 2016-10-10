@@ -1,4 +1,4 @@
-package seikkailupeli;
+package net.katyas.textadventure;
 
 public class Item {
 

@@ -1,4 +1,4 @@
-package seikkailupeli;
+package net.katyas.textadventure;
 
 import java.util.ArrayList;
 import java.util.Collections;
