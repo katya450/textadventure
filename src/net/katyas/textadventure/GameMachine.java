@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import net.katyas.textadventure.CommandParser;
+import net.katyas.textadventure.commands.Command;
+import net.katyas.textadventure.commands.ExitCommand;
 
 public class GameMachine {
 	
@@ -58,33 +60,37 @@ public class GameMachine {
 			//first word and shit
 			//lue 7, 9, 23 pattern -kirjasta (7!)
 			
-			if (firstWord.equals("ex") || firstWord.equals("qu")) {
-				gameState.gameOn = false;
-			} 
+			Command exitCommand = new ExitCommand();
 			
-			Exit maybeDirection = exits.get(firstWord);
-			if (maybeDirection != null) { 				//tsekkaa, että annettu sana on exits mapissä oleva suunta
-				if (gameState.location.getExit(maybeDirection).isPresent()) {
-					gameState.location = gameState.location.getExit(maybeDirection).get();
-				} else {
-					System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
-				}
-			} else if (firstWord.equals("ta") || firstWord.equals("ge")) {
-				if (parsedCommand.size() < 2) {
-					System.out.println("Take what?");
-				} else {
-					String secondWord = parsedCommand.get(1).toLowerCase();		
-					Optional<Item> maybeItem = gameState.location.findItem(secondWord);
-					if (maybeItem.isPresent()) {
-						gameState.inventory.addItem(maybeItem.get());
-						System.out.println("You have taken the " + maybeItem.get().getName() + ".");
-						gameState.location.removeItem(maybeItem.get());
-					} else {
-						System.out.println("No such item");
-					}
-				}
+			if (exitCommand.is(firstWord)) {
+				gameState = exitCommand.execute(firstWord, Optional.empty(), gameState);
+				
 			} else {
-				System.out.println("WTF. I don't understand you. Retry. Type a direction for example or take an item?");	
+
+				Exit maybeDirection = exits.get(firstWord);
+				if (maybeDirection != null) { 				//tsekkaa, että annettu sana on exits mapissä oleva suunta
+					if (gameState.location.getExit(maybeDirection).isPresent()) {
+						gameState.location = gameState.location.getExit(maybeDirection).get();
+					} else {
+						System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
+					}
+				} else if (firstWord.equals("ta") || firstWord.equals("ge")) {
+					if (parsedCommand.size() < 2) {
+						System.out.println("Take what?");
+					} else {
+						String secondWord = parsedCommand.get(1).toLowerCase();		
+						Optional<Item> maybeItem = gameState.location.findItem(secondWord);
+						if (maybeItem.isPresent()) {
+							gameState.inventory.addItem(maybeItem.get());
+							System.out.println("You have taken the " + maybeItem.get().getName() + ".");
+							gameState.location.removeItem(maybeItem.get());
+						} else {
+							System.out.println("No such item");
+						}
+					}
+				} else {
+					System.out.println("WTF. I don't understand you. Retry. Type a direction for example or take an item?");	
+				}
 			}
 		} 				
 	}	
