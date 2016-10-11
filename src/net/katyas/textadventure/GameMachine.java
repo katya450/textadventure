@@ -12,6 +12,7 @@ import java.util.Scanner;
 import net.katyas.textadventure.CommandParser;
 import net.katyas.textadventure.commands.Command;
 import net.katyas.textadventure.commands.ExitCommand;
+import net.katyas.textadventure.commands.TakeCommand;
 
 public class GameMachine {
 	
@@ -54,13 +55,14 @@ public class GameMachine {
 			
 			List<String> parsedCommand = CommandParser.parse(command);	
 			String firstWord = parsedCommand.get(0).toLowerCase();
-			
+
 			
 			//refaktoroi ennenkun teet mitään!
 			//first word and shit
 			//lue 7, 9, 23 pattern -kirjasta (7!)
 			
 			Command exitCommand = new ExitCommand();
+			Command takeCommand = new TakeCommand();
 			
 			if (exitCommand.is(firstWord)) {
 				gameState = exitCommand.execute(firstWord, Optional.empty(), gameState);
@@ -74,11 +76,12 @@ public class GameMachine {
 					} else {
 						System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
 					}
-				} else if (firstWord.equals("ta") || firstWord.equals("ge")) {
+				} else if (takeCommand.is(firstWord)) {
 					if (parsedCommand.size() < 2) {
 						System.out.println("Take what?");
 					} else {
 						String secondWord = parsedCommand.get(1).toLowerCase();		
+
 						Optional<Item> maybeItem = gameState.location.findItem(secondWord);
 						if (maybeItem.isPresent()) {
 							gameState.inventory.addItem(maybeItem.get());

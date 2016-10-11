@@ -9,5 +9,4 @@ public class GameState {
 	public Inventory inventory;
 	public Optional<String> message;
 	
-	
 }
