@@ -1,3 +1,6 @@
+A.-------------------------------------------
+Refaktoroi koodi, pura iso iffittely GameMachinesta omiksi luokikseen.
+
 5.-------------------------------------------
 "In" tai "i" -komento listaa pelaajan inventoryssä olevat itemit.
 Jos pelaajalla ei ole mukana mitään, siitä tulee huomautus.
