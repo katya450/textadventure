@@ -10,7 +10,7 @@ public class CommandParser {
 	public static List<String> parse (String command) {
 		
 		//kutsu sanaListaa joka parsii stringistä sanat erilleen! parametrina menee stringi sanoja.
-		List<String> splitted = sanaLista(command);		
+		List<String> splitted = sanaLista(command.toLowerCase());		
 		
 		//kutsu metodia joka kaivaa listasta kaksi sanaa. Parametrina sanalista, jossa sanat eroteltuna välillä
 		List<String> kahdenSananLista = kaksiSanaa(splitted);
