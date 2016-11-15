@@ -49,45 +49,31 @@ public class GameMachine {
 			String command = input.nextLine();
 			
 			List<String> parsedCommand = CommandParser.parse(command);	
-			String firstWord = parsedCommand.get(0).toLowerCase();
-
-			
-			//refaktoroi ennenkun teet mitään!
-			//first word and shit
-			//lue 7, 9, 23 pattern -kirjasta (7!)
+			String firstWord = parsedCommand.get(0);
+			// tsekkaa, onko toista sanaa. Jos ei, se on optional (empty) jos on niin sitten se on se sana.
+			Optional<String> secondWord = parsedCommand.size() == 1 ? 
+					Optional.empty() : 
+					Optional.of(parsedCommand.get(1));
 			
 			Command exitCommand = new ExitCommand();
 			Command takeCommand = new TakeCommand();
 			Command directionCommand = new DirectionCommand();
 
-			
 			if (exitCommand.is(firstWord)) {
-				gameState = exitCommand.execute(firstWord, Optional.empty(), gameState);
+				gameState = exitCommand.execute(firstWord, secondWord, gameState);
 				
 			} else if (directionCommand.is(firstWord)) {
-				gameState = directionCommand.execute(firstWord, Optional.empty(), gameState);
+				gameState = directionCommand.execute(firstWord, secondWord, gameState);
 			
 			} else if (takeCommand.is(firstWord)) {
-					// secondWord.map(word => ...tähän toiminto ilman optionalia).orElse(....Take what?)
-					if (parsedCommand.size() < 2) {
-						System.out.println("Take what?");
-					} else {
+				gameState = takeCommand.execute(firstWord, secondWord, gameState);
 						
-						Optional<Item> maybeItem = gameState.location.findItem(secondWord);
-						if (maybeItem.isPresent()) {
-							gameState.inventory.addItem(maybeItem.get());
-							System.out.println("You have taken the " + maybeItem.get().getName() + ".");
-							gameState.location.removeItem(maybeItem.get());
-						} else {
-							System.out.println("No such item");
-						}
-					}
-				} else {
+			} else {
 					System.out.println("WTF. I don't understand you. Retry. Type a direction for example or take an item?");	
-				}
 			}
-		} 				
-	}	
+		}
+	} 				
+	
 }
 	
 	
