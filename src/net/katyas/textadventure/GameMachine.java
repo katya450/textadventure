@@ -13,6 +13,7 @@ import net.katyas.textadventure.CommandParser;
 import net.katyas.textadventure.commands.Command;
 import net.katyas.textadventure.commands.ExitCommand;
 import net.katyas.textadventure.commands.TakeCommand;
+import net.katyas.textadventure.commands.DirectionCommand;
 
 public class GameMachine {
 	
@@ -21,12 +22,6 @@ public class GameMachine {
 		GameState gameState = new GameState();
 		
 		gameState.inventory = new Inventory();
-		
-		Map<String, Exit> exits = new HashMap<>();
-		exits.put("no", NORTH);
-		exits.put("ea", EAST);
-		exits.put("so", SOUTH);
-		exits.put("we", WEST);
 		
 		Room hallway = new Room("hallway", "");
 		Room kitchen = new Room("kitchen", "");
@@ -63,25 +58,21 @@ public class GameMachine {
 			
 			Command exitCommand = new ExitCommand();
 			Command takeCommand = new TakeCommand();
+			Command directionCommand = new DirectionCommand();
+
 			
 			if (exitCommand.is(firstWord)) {
 				gameState = exitCommand.execute(firstWord, Optional.empty(), gameState);
 				
-			} else {
-
-				Exit maybeDirection = exits.get(firstWord);
-				if (maybeDirection != null) { 				//tsekkaa, että annettu sana on exits mapissä oleva suunta
-					if (gameState.location.getExit(maybeDirection).isPresent()) {
-						gameState.location = gameState.location.getExit(maybeDirection).get();
-					} else {
-						System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
-					}
-				} else if (takeCommand.is(firstWord)) {
+			} else if (directionCommand.is(firstWord)) {
+				gameState = directionCommand.execute(firstWord, Optional.empty(), gameState);
+			
+			} else if (takeCommand.is(firstWord)) {
+					// secondWord.map(word => ...tähän toiminto ilman optionalia).orElse(....Take what?)
 					if (parsedCommand.size() < 2) {
 						System.out.println("Take what?");
 					} else {
-						String secondWord = parsedCommand.get(1).toLowerCase();		
-
+						
 						Optional<Item> maybeItem = gameState.location.findItem(secondWord);
 						if (maybeItem.isPresent()) {
 							gameState.inventory.addItem(maybeItem.get());
