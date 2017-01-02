@@ -55,6 +55,10 @@ public class GameMachine {
 					Optional.empty() : 
 					Optional.of(parsedCommand.get(1));
 			
+			
+			//refaktoroi! Laita commandit listaan, ja iteroi lista läpi ja katso mihin osuu. Sitten execute sille tietylle.
+			//java8 tapa, filter lista!
+					
 			Command exitCommand = new ExitCommand();
 			Command takeCommand = new TakeCommand();
 			Command directionCommand = new DirectionCommand();

@@ -15,15 +15,17 @@ import net.katyas.textadventure.Room.Exit;
 
 public class DirectionCommand implements Command {
 
-	@Override
-	public GameState execute(String firstWord, Optional<String> secondWord, GameState gameState) {
-
-		//suuntien synonyymit mäppiin
-		Map<String, Exit> exits = new HashMap<>();
+	private static Map<String, Exit> exits = new HashMap<>();
+	//static block, eli kun näitä ei ajeta konstruktorissa eikä metodissa niin tällä saadaan nämä ajettua kun luokka ladataan 
+	static {
 		exits.put("no", NORTH);
 		exits.put("ea", EAST);
 		exits.put("so", SOUTH);
-		exits.put("we", WEST);
+		exits.put("we", WEST);		
+	}
+
+	@Override
+	public GameState execute(String firstWord, Optional<String> secondWord, GameState gameState) {
 		
 		Exit maybeDirection = exits.get(firstWord);
 		if (maybeDirection != null) { 										//tsekkaa, että annettu sana on exits mapissä oleva suunta
@@ -38,13 +40,8 @@ public class DirectionCommand implements Command {
 
 	@Override
 	public boolean is(String firstWord) {
-		// TODO Auto-generated method stub - tähän kahen kirjaimen komennot ja executessa tsekki suunnalle ja pääseekö sinne
 		
-		return firstWord.equals("no") || firstWord.equals("so") || firstWord.equals("we") || firstWord.equals("ea"); 
+		return exits.keySet().contains(firstWord);
 
 	}
-	
-	
-	
-
 }
