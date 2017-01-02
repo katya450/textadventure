@@ -1,5 +1,7 @@
 A.-------------------------------------------
 Refaktoroi koodi, pura iso iffittely GameMachinesta omiksi luokikseen.
+Siirrä System out -messaget gamestaten messageiksi.
+Laita komennot listaan.
 
 5.-------------------------------------------
 "In" tai "i" -komento listaa pelaajan inventoryssä olevat itemit.
