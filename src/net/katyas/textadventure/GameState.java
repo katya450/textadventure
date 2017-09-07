@@ -8,5 +8,9 @@ public class GameState {
 	public boolean gameOn;
 	public Inventory inventory;
 	public Optional<String> message;
-	
+
+	public GameState gameMessage(String message) {
+		this.message = Optional.of(message);
+		return this;
+	}
 }

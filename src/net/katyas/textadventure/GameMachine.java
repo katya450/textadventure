@@ -3,6 +3,7 @@ package net.katyas.textadventure;
 import static net.katyas.textadventure.Room.Exit;
 import static net.katyas.textadventure.Room.Exit.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ import net.katyas.textadventure.commands.DirectionCommand;
 public class GameMachine {
 	
 	public static void main (String[] args) {
+		
+		//--luodaan pelin maailma
 		
 		GameState gameState = new GameState();
 		
@@ -37,7 +40,13 @@ public class GameMachine {
 		gameState.gameOn = true;
 		gameState.location = hallway;
 		
+		List<Command> commands = Arrays.asList(new ExitCommand(), new TakeCommand(), new DirectionCommand());
+		
+		//--|
+		
 		final Scanner input = new Scanner(System.in);
+		
+		//-- pelilooppi
 		
 		while (gameState.gameOn) {
 			System.out.println("You are in the " + gameState.location.getName());
@@ -46,35 +55,28 @@ public class GameMachine {
 			}
 			System.out.println("Exits: " + gameState.location.getExits().toString());
 			System.out.printf("> ");
-			String command = input.nextLine();
+			String playerInput = input.nextLine();
 			
-			List<String> parsedCommand = CommandParser.parse(command);	
+			List<String> parsedCommand = CommandParser.parse(playerInput);	
 			String firstWord = parsedCommand.get(0);
 			// tsekkaa, onko toista sanaa. Jos ei, se on optional (empty) jos on niin sitten se on se sana.
 			Optional<String> secondWord = parsedCommand.size() == 1 ? 
 					Optional.empty() : 
 					Optional.of(parsedCommand.get(1));
 			
+			// k‰yd‰‰n l‰pi komennon ensimm‰inen sana ja verrataan sit‰ komentolistaan. Jos osuu listaan, otetaan komento 
+			// (, muutetaan se optionaliksi)
+			// ja suoritetaan se. Jos ei osu listaan, muokataan pelitilan messagea ja tulostetaan se pelaajalle.
+			commands.stream()
+					.filter(command -> command.is(firstWord)) //
+					.findFirst() //muuttaa optionaliksi
+					.map(command -> command.execute(firstWord, secondWord, gameState))
+					.orElse(gameState.gameMessage("NOP"));
 			
-			//refaktoroi! Laita commandit listaan, ja iteroi lista l√§pi ja katso mihin osuu. Sitten execute sille tietylle.
-			//java8 tapa, filter lista!
-					
-			Command exitCommand = new ExitCommand();
-			Command takeCommand = new TakeCommand();
-			Command directionCommand = new DirectionCommand();
-
-			if (exitCommand.is(firstWord)) {
-				gameState = exitCommand.execute(firstWord, secondWord, gameState);
-				
-			} else if (directionCommand.is(firstWord)) {
-				gameState = directionCommand.execute(firstWord, secondWord, gameState);
 			
-			} else if (takeCommand.is(firstWord)) {
-				gameState = takeCommand.execute(firstWord, secondWord, gameState);
-						
-			} else {
+			
 					System.out.println("WTF. I don't understand you. Retry. Type a direction for example or take an item?");	
-			}
+			
 		}
 	} 				
 	
