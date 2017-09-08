@@ -49,6 +49,14 @@ public class GameMachine {
 		//-- pelilooppi
 		
 		while (gameState.gameOn) {
+
+			
+			//TODO: alla oleva heittää nullpointerin. Tee rakenne, joka tsekkaa onko optionalissa mitään ja jos ei oo niin skip.
+			
+			if (gameState.message != null) {
+				System.out.println(gameState.message.toString());	
+			}
+
 			System.out.println("You are in the " + gameState.location.getName());
 			if (gameState.location.getItems().size() > 0) {
 				System.out.println("There are following items in this room: " + gameState.location.getItems());
@@ -64,19 +72,14 @@ public class GameMachine {
 					Optional.empty() : 
 					Optional.of(parsedCommand.get(1));
 			
-			// k�yd��n l�pi komennon ensimm�inen sana ja verrataan sit� komentolistaan. Jos osuu listaan, otetaan komento 
-			// (, muutetaan se optionaliksi)
+			// käydään läpi komennon ensimmäinen sana ja verrataan sitä komentolistaan. Jos osuu listaan, otetaan komento 
+			// , muutetaan se optionaliksi
 			// ja suoritetaan se. Jos ei osu listaan, muokataan pelitilan messagea ja tulostetaan se pelaajalle.
 			commands.stream()
-					.filter(command -> command.is(firstWord)) //
-					.findFirst() //muuttaa optionaliksi
-					.map(command -> command.execute(firstWord, secondWord, gameState))
-					.orElse(gameState.gameMessage("NOP"));
-			
-			
-			
-					System.out.println("WTF. I don't understand you. Retry. Type a direction for example or take an item?");	
-			
+					.filter(command -> command.is(firstWord)) 							//palauttaa listan
+					.findFirst() 														//muuttaa optionaliksi (1/0)
+					.map(command -> command.execute(firstWord, secondWord, gameState))	
+					.orElse(gameState.gameMessage("I don't understand you. Retry. Type a direction for example or take an item?"));	//tämä voidaan sanoa vain optionalille			
 		}
 	} 				
 	
