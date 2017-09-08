@@ -42,16 +42,11 @@ public class GameMachine {
 		
 		List<Command> commands = Arrays.asList(new ExitCommand(), new TakeCommand(), new DirectionCommand());
 		
-		//--|
-		
 		final Scanner input = new Scanner(System.in);
 		
 		//-- pelilooppi
 		
 		while (gameState.gameOn) {
-
-			
-			//TODO: alla oleva heittää nullpointerin. Tee rakenne, joka tsekkaa onko optionalissa mitään ja jos ei oo niin skip.
 			
 			if (gameState.message != null) {
 				System.out.println(gameState.message.toString());	

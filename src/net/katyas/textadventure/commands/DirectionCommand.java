@@ -35,6 +35,7 @@ public class DirectionCommand implements Command {
 				System.out.println("That's not a valid direction, there appears to be a wall you cannot break.");
 			}
 		}
+		gameState.message = null;
 		return gameState;
 	}
 
