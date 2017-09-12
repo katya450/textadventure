@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import net.katyas.textadventure.CommandParser;
 import net.katyas.textadventure.commands.Command;
@@ -70,11 +71,13 @@ public class GameMachine {
 			// käydään läpi komennon ensimmäinen sana ja verrataan sitä komentolistaan. Jos osuu listaan, otetaan komento 
 			// , muutetaan se optionaliksi
 			// ja suoritetaan se. Jos ei osu listaan, muokataan pelitilan messagea ja tulostetaan se pelaajalle.
-			commands.stream()
+			GameState copyGameState = new GameState(gameState);
+			GameState gs = commands.stream()
 					.filter(command -> command.is(firstWord)) 							//palauttaa listan
 					.findFirst() 														//muuttaa optionaliksi (1/0)
-					.map(command -> command.execute(firstWord, secondWord, gameState))	
+					.map(command -> command.execute(firstWord, secondWord, copyGameState))	
 					.orElse(gameState.gameMessage("I don't understand you. Retry. Type a direction for example or take an item?"));	//tämä voidaan sanoa vain optionalille			
+			gameState = gs;
 		}
 	} 				
 	

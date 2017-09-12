@@ -13,4 +13,15 @@ public class GameState {
 		this.message = Optional.of(message);
 		return this;
 	}
+	
+	public GameState() {
+		
+	}
+	
+	public GameState(GameState gameState) {
+		this.location = gameState.location;
+		this.gameOn = gameState.gameOn;
+		this.inventory = gameState.inventory;
+		this.message = gameState.message;
+	}
 }
